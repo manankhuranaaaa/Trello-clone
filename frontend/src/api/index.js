@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/api' });
+const api = axios.create({
+  baseURL: 'https://trello-clone-rrls.onrender.com/api'
+});
 
 // Boards
 export const getBoards = () => api.get('/boards').then(r => r.data);
