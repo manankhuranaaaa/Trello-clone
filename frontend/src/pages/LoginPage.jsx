@@ -31,8 +31,17 @@ export default function LoginPage() {
     setLoading(true);
     // simulate tiny network delay for realism
     await new Promise(r => setTimeout(r, 600));
+    // Check demo credentials
     if (form.email === DEMO.email && form.password === DEMO.password) {
       login({ name: DEMO.name, email: DEMO.email });
+      navigate('/');
+      return;
+    }
+    // Check signed-up users
+    const users = JSON.parse(localStorage.getItem('trello_users') || '[]');
+    const match = users.find(u => u.email === form.email && u.password === form.password);
+    if (match) {
+      login({ name: match.name, email: match.email });
       navigate('/');
     } else {
       setGlobalError('Invalid email or password. Please try again.');
