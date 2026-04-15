@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar({ boardName }) {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <nav style={{
@@ -20,9 +27,9 @@ export default function Navbar({ boardName }) {
         onClick={() => navigate('/')}
         style={{
           display: 'flex', alignItems: 'center', gap: 6,
-          padding: '4px 8px', borderRadius: var(--radius),
+          padding: '4px 8px', borderRadius: 3,
           color: '#fff', fontWeight: 700, fontSize: 18,
-          transition: 'background .15s', borderRadius: 3,
+          transition: 'background .15s',
         }}
         onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,.2)'}
         onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
@@ -78,7 +85,20 @@ export default function Navbar({ boardName }) {
           color: '#fff', fontWeight: 700, fontSize: 12,
           cursor: 'pointer', marginLeft: 4,
           border: '2px solid rgba(255,255,255,.3)',
-        }} title="Manan Khurana">M</div>
+        }} title={user?.name}>{user?.name?.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() ?? 'MK'}</div>
+
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          style={{
+            padding: '4px 10px', borderRadius: 3,
+            background: 'rgba(255,255,255,.15)',
+            color: '#fff', fontWeight: 500, fontSize: 13,
+            marginLeft: 4, transition: 'background .15s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(222,53,11,.7)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,.15)'}
+        >Logout</button>
       </div>
     </nav>
   );
